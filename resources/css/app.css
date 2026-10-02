@@ -1,0 +1,682 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+
+/* Cegah teks panjang tanpa spasi merusak kartu */
+#detailPanel, #detailPanel * { overflow-wrap: anywhere; }
+/* Jarak antar slide (sistem slide tetap) — untuk pengumuman & prestasi */
+#carouselPengumuman .carousel-item,
+#carouselPrestasi .carousel-item { padding-inline: .5rem; }
+/* =========================================================
+   ADMIN — theme di atas Bootstrap
+========================================================= */
+
+:root { --admin-zoom: .8; --sidebar-width: 260px; }
+body.admin-body { background: #e8f7fc; zoom: var(--admin-zoom); }
+html { scroll-behavior: smooth; }
+
+/* --- Sidebar --- */
+.admin-sidebar {
+    position: fixed;
+    top: 0; bottom: 0; left: 0;
+    width: var(--sidebar-width);
+    padding: 25px 20px;
+    background: #0d172c;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.admin-avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    background: #fff;
+    object-fit: contain;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.admin-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 16px;
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: .2s;
+}
+.admin-nav-link i { width: 20px; text-align: center; }
+.admin-nav-link:hover { background: rgba(255,255,255,.08); color: #fff; }
+.admin-nav-link.active { background: #2563eb; color: #fff; }
+
+.admin-main { margin-left: var(--sidebar-width); padding: 25px 40px 40px; min-height: 100vh; }
+
+/* --- Header halaman --- */
+.admin-title { margin: 0; font-size: 20px; font-weight: 700; color: #111; }
+.admin-breadcrumb { font-size: 12px; color: #666; }
+.admin-header-line { border-bottom: 1px solid #9ca3af; }
+
+/* --- Aksen desain --- */
+.admin-outline { border: 1px solid #2563eb; }
+.admin-card { border-radius: 12px; }
+.admin-thead { background: #d2e0fa; }
+.admin-thead th { color: #666; font-weight: 500; text-align: center; white-space: nowrap; }
+.admin-item { background: #eeeeef; border-radius: 11px; }
+.admin-footer { background: #d2e0fa; }
+
+/* --- Search & filter --- */
+.admin-search .form-control,
+.admin-filter-select { height: 46px; }
+
+.admin-search .input-group-text {
+    background: #fff;
+    color: #777;
+    border: 1px solid #2563eb;
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+}
+
+.admin-search .form-control {
+    border: 1px solid #2563eb;
+    border-left: 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.admin-filter-select { border-radius: 10px; border: 1px solid #2563eb; }
+
+/* --- Pill ekstrakurikuler --- */
+.admin-pill {
+    background: #0d172c;
+    border: 2px solid #0d172c;
+    border-radius: 16px;
+    min-height: 52px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    transition: .15s;
+}
+.admin-pill:hover { background: #17233d; color: #fff; }
+.admin-pill.selected { background: #17233d; border-color: #2563eb; }
+
+/* --- Badge status --- */
+.badge-admin { min-width: 84px; padding: 6px 16px; font-size: 11px; }
+/* ===================== ADMIN: TOPBAR & SIDEBAR MOBILE ===================== */
+.admin-topbar { display: none; }
+
+@media (max-width: 991.98px) {
+    /* Nonaktifkan zoom 80% di HP agar teks tidak terlalu kecil */
+    body.admin-body { zoom: 1; }
+
+    /* Sidebar off-canvas: tersembunyi total sampai diklik garis tiga */
+    .admin-sidebar {
+        position: fixed;
+        top: 0; bottom: 0; left: 0;
+        width: min(80vw, 300px) !important;
+        height: 100vh;
+        overflow-y: auto;
+        transform: translateX(-110%);
+        visibility: hidden;
+        transition: transform .25s ease, visibility .25s;
+    }
+    .admin-sidebar.show {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    /* Topbar: logo kiri, hamburger kanan */
+    .admin-topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #0d172c;
+        padding: 10px 16px;
+        position: sticky;
+        top: 0;
+        z-index: 998;
+    }
+
+    .sidebar-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .5);
+        z-index: 997;
+        display: none;
+    }
+    .sidebar-backdrop.show { display: block; }
+
+    .admin-main { margin-left: 0; padding: 16px; min-height: calc(100vh - 57px); }
+}
+/* --- Area data: tinggi tetap, sama di semua halaman --- */
+.admin-scroll {
+    height: 420px;
+    overflow-y: auto;   /* jaring pengaman kalau teks panjang menyebabkan overflow tipis */
+}
+.admin-scroll::-webkit-scrollbar { width: 5px; }
+.admin-scroll::-webkit-scrollbar-thumb { background: #c0c0c0; border-radius: 10px; }
+
+.admin-scroll thead th { position: sticky; top: 0; z-index: 1; }
+
+/* =========================================================
+   THEME SMAN 8 — override Bootstrap
+========================================================= */
+:root {
+    --bs-primary: #2563eb;
+    --bs-primary-rgb: 37, 99, 235;
+    --bs-body-font-family: 'Inter', sans-serif;
+    --sman8-navy: #071225;
+}
+
+/* Tombol utama */
+.btn-primary {
+    --bs-btn-bg: #2563eb;
+    --bs-btn-border-color: #2563eb;
+    --bs-btn-hover-bg: #1d4ed8;
+    --bs-btn-hover-border-color: #1d4ed8;
+    --bs-btn-active-bg: #1e40af;
+    --bs-btn-active-border-color: #1e40af;
+    --bs-btn-disabled-bg: #2563eb;
+    --bs-btn-disabled-border-color: #2563eb;
+}
+
+/* Navbar gelap transparan + menu aktif kotak biru */
+.navbar-sman8 {
+    background: rgba(5, 12, 27, .93);
+    backdrop-filter: blur(12px);
+}
+.navbar-sman8 .nav-link { color: #dbe3f0; font-size: 13px; font-weight: 500; }
+.navbar-sman8 .nav-link:hover,
+.navbar-sman8 .nav-link.active {
+    color: #fff;
+    background: #1d4ed8;
+    border-radius: 6px;
+}
+
+/* Section gelap navy */
+.section-dark { background: var(--sman8-navy); color: #fff; }
+
+/* Judul section dengan garis bawah biru */
+.title-underline { position: relative; display: inline-block; padding-bottom: .8rem; }
+.title-underline::after {
+    content: "";
+    position: absolute;
+    left: 50%; bottom: 0;
+    transform: translateX(-50%);
+    width: 150px; height: 2.5px;
+    background: var(--bs-primary);
+    border-radius: 2px;
+}
+
+/* Hero (gradient + foto: memang bukan tugas Bootstrap) */
+.hero {
+    min-height: 100vh;
+    background:
+        linear-gradient(90deg, rgba(3,9,20,.92) 0%, rgba(3,9,20,.66) 45%, rgba(3,9,20,.25) 100%),
+        url('/public/assets/images/sekolah/hero-foto2.png') center / cover no-repeat;
+}
+.hero-title {
+    font-size: clamp(30px, 4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.hero-sub {
+    max-width: 420px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+/* Bar info hero (email + akreditasi) — pembatas antar kolom */
+.info-cell:first-child { border-right: 1px solid rgba(255,255,255,.25); }
+@media (max-width: 767.98px) {
+    .info-cell:first-child { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.25); }
+}
+
+/* Pill ekstrakurikuler — hover biru */
+.extra-pill { transition: .25s; }
+.extra-pill:hover { background: var(--bs-primary) !important; transform: translateY(-2px); }
+
+/* Masonry galeri */
+.gallery-masonry { columns: 4 220px; column-gap: 14px; }
+.gallery-masonry > a { display: block; margin-bottom: 14px; break-inside: avoid; overflow: hidden; border-radius: .5rem; }
+.gallery-masonry img { width: 100%; height: auto; object-fit: cover; transition: .35s; }
+.gallery-masonry a:hover img { transform: scale(1.06); }
+
+/* Indikator carousel jadi titik bulat */
+.carousel-indicators { position: static; margin-top: 1.5rem; }
+.carousel-indicators [data-bs-target] {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    border: 0;
+    background-color: rgba(255,255,255,.35);
+}
+.carousel-indicators .active { background-color: #3b82f6; }
+
+/* Gambar kartu pengumuman */
+.announce-img { height: 230px; object-fit: cover; }
+
+section[id] { scroll-margin-top: 80px; }
+/* =========================================================
+   HEADER HALAMAN SUB (Kembali + Judul)
+========================================================= */
+
+.page-back {
+    color: var(--bs-primary);
+    font-size: clamp(14px, 1.6vw, 17px);
+    font-weight: 500;
+    text-decoration: none;
+    transition: .2s;
+}
+.page-back:hover { color: #1d4ed8; }
+
+.page-title {
+    color: var(--bs-primary);
+    font-size: clamp(17px, 2vw, 22px);
+    font-weight: 700;
+    line-height: 1;
+}
+
+.page-header .container {
+    padding-top: .65rem;
+    padding-bottom: .65rem;
+}
+
+
+/* =========================================================
+   KARTU PENGUMUMAN (halaman)
+========================================================= */
+.modal-announcement { max-width: 540px; } 
+/*pop up edit&tambah jdi lebihkecil*/
+
+.announce-card {
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .14);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.announce-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(15, 23, 42, .10);
+}
+
+.announce-card-img {
+    width: calc(100% - 16px);
+    height: 180px;
+    margin: 8px;
+    object-fit: cover;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+}
+
+/* logo default (tanpa gambar) → tampil utuh, tidak terpotong */
+.obj-contain { object-fit: contain; padding: 16px; }
+
+.announce-date { color: #64748b; font-size: 12px; }
+
+.announce-title {
+    color: var(--bs-primary);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.announce-text { color: #111827; font-size: 12.5px; line-height: 1.6; }
+
+
+/* =========================================================
+   KARTU GALERI (halaman)
+========================================================= */
+
+.gallery-card {
+    background: #fff;
+    border: 1px solid #d3d3d3;
+    border-radius: 10px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .14);
+    padding: 18px 30px;
+    gap: 30px;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.gallery-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(15, 23, 42, .10);
+}
+
+.gallery-img {
+    flex: 0 0 230px;
+    width: 230px;
+    height: 200px;
+    border-radius: 9px;
+    overflow: hidden;
+}
+.gallery-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .3s ease;
+}
+.gallery-card:hover .gallery-img img { transform: scale(1.03); }
+
+.gallery-day {
+    display: block;
+    color: var(--bs-primary);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1;
+}
+.gallery-month { color: #111827; font-size: 13px; }
+.gallery-date  { margin-bottom: 12px; }
+
+.gallery-title {
+    color: #111827;
+    font-size: clamp(19px, 2.4vw, 26px);
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+@media (max-width: 767.98px) {
+    .gallery-img { flex-basis: 100%; width: 100%; height: 190px; }
+}
+
+
+/* =========================================================
+   LOGIN (ukuran sesuai desain — muat satu layar)
+========================================================= */
+
+.login-page { background: #0d1529; }
+
+.login-brand-name {
+    color: #fff;
+    font-size: clamp(17px, 2.2vw, 26px);
+    font-weight: 700;
+}
+
+.login-card {
+    border-radius: 24px;
+    box-shadow:
+        0 0 14px rgba(37, 99, 235, .6),
+        0 0 35px rgba(37, 99, 235, .4),
+        0 10px 35px rgba(0, 0, 0, .25);
+}
+
+.login-input {
+    height: 56px;
+    border: 0;
+    outline: none;
+    border-radius: 16px;
+    background: #d7d7d7;
+    padding: 0 24px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #5f6878;
+    width: 100%;
+}
+.login-input::placeholder { color: #697180; }
+.login-input:focus {
+    background: #eee;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, .15);
+}
+
+.login-submit {
+    height: 60px;
+    border: 3px solid #fff;
+    border-radius: 30px;
+    background: transparent;
+    color: #fff;
+    font-family: inherit;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: .2s;
+}
+.login-submit:hover { background: #fff; color: #0d1529; }
+
+.login-back {
+    color: #fff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: opacity .2s;
+}
+.login-back:hover { opacity: .75; color: #fff; }
+/* Sembunyikan ringkasan "Showing X to Y of Z results" bawaan pagination */
+.admin-footer nav p { display: none; }
+/* Kartu pengumuman guest — bisa diklik */
+main .announce-card { transition: transform .2s ease, box-shadow .2s ease; }
+main .announce-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(15, 23, 42, .12);
+}
+
+/* ===================== GUEST: HOME ===================== */
+section[id] { scroll-margin-top: 80px; }
+
+.hero-sman8 { min-height: 560px; display: flex; align-items: center; color: #fff;
+    background-position: center; background-size: cover; }
+.hero-title { font-size: clamp(2rem, 4.5vw, 3.4rem); font-weight: 800; line-height: 1.15; }
+.hero-sub { color: #e2e8f0; }
+
+.home-title { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 800; line-height: 1.2; }
+.title-underline { width: 220px; height: 4px; background: #2563eb; border-radius: 99px; margin-top: 12px; }
+
+.section-dark { background: #0f172a; color: #fff; }
+
+.dark-card { background: #fff; color: #0f172a; border-radius: 14px; overflow: hidden; height: 100%; }
+.dark-card img { width: 100%; height: 190px; object-fit: cover; display: block; }
+
+.pill-ekskul { background: #0f172a; color: #fff; font-weight: 600; padding: 14px 12px;
+    border-radius: 12px; text-align: center; transition: .2s; }
+.pill-ekskul:hover { background: #1e293b; color: #fff; }
+
+.quote-section { background: linear-gradient(135deg, #2f6bff 0%, #1d4ed8 60%, #173db3 100%); color: #fff; }
+.quote-slide { min-height: 240px; display: flex; align-items: center; justify-content: center; padding: 70px 16px; }
+.quote-slide p { max-width: 850px; text-align: center; font-size: clamp(1.1rem, 2.2vw, 1.6rem); }
+
+.top-siswa-card { background: #fff; color: #0f172a; border-radius: 14px; overflow: hidden;
+    height: 100%; text-align: center; }
+.top-siswa-card img { width: 100%; height: 230px; object-fit: cover; background: #dc2626; display: block; }
+
+.table-rekap th { background: #0f172a; color: #fff; font-weight: 600; text-align: center; white-space: nowrap; }
+.table-rekap td { text-align: center; }
+.table-rekap th, .table-rekap td { border: 1px solid #cbd5e1; vertical-align: middle; }
+
+.galeri-grid-img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; display: block; }
+
+.kontak-ikon { width: 46px; height: 46px; border: 2px solid #2563eb; border-radius: 50%;
+    color: #2563eb; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+.carousel-indicators.position-static { position: static; margin: 1rem 0 0; }
+.carousel-indicators [data-bs-target] { width: 10px; height: 10px; border-radius: 50%; }
+
+/* ===================== ADMIN: DATA SISWA ===================== */
+.table-siswa thead th { background: #d7e3fc; color: #334155; font-weight: 600; white-space: nowrap; }
+.table-footer-bar { background: #d7e3fc; }
+.badge-aktif { background: #86efac; color: #14532d; }
+.badge-nonaktif { background: #e2e8f0; color: #475569; }
+.btn-aksi { width: 34px; height: 34px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff;
+    color: #475569; display: inline-flex; align-items: center; justify-content: center; }
+.btn-aksi:hover { background: #f1f5f9; color: #1e293b; }
+.siswa-foto-detail { width: 200px; height: 240px; object-fit: cover; border-radius: 12px; }
+
+/* ===================== ADMIN: PRESTASI ===================== */
+.prestasi-item { border: 1px solid #e2e8f0; border-radius: 12px; background: #fff;
+    transition: .2s; cursor: pointer; }
+.prestasi-item:hover { box-shadow: 0 .35rem .8rem rgba(0,0,0,.08); transform: translateY(-1px); }
+.prestasi-img { width: 280px; height: 160px; object-fit: cover; border-radius: 10px; flex-shrink: 0; }
+@media (max-width: 767.98px) {
+    .prestasi-img { width: 100%; height: 180px; }
+}
+.prestasi-foto-detail { width: 220px; height: 170px; object-fit: cover; border-radius: 12px; }
+.modal-footer-soft { background: #d7e3fc; }
+
+/* ===================== PERPUSTAKAAN ===================== */
+.chip-buku { border: 1.5px solid #111827; border-radius: 10px;
+    padding: 6px 18px; font-size: 13px; font-weight: 600; white-space: nowrap; }
+
+/* ===================== GUEST: HALAMAN PRESTASI ===================== */
+.prestasi-card {
+    background: #fff;
+    border: 1px solid #d8d8d8;
+    border-radius: 16px;
+    padding: 10px 10px 16px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .14);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+.prestasi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(15, 23, 42, .10);
+}
+.prestasi-card-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+.prestasi-card-title {
+    color: var(--bs-primary);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+.prestasi-card-text {
+    color: #111827;
+    font-size: 13px;
+    line-height: 1.6;
+}
+/* ===================== FIX: teks panjang tetap dalam kotak kartu ===================== */
+.announce-text,
+.prestasi-card-text,
+.dark-card p {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Deskripsi prestasi dibatasi 3 baris agar tinggi kartu seragam */
+.prestasi-card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===================== FIX: foto top siswa lebih tinggi (halaman /top-siswa) ===================== */
+@media (min-width: 768px) {
+    .top-siswa-page .top-siswa-card img { height: 360px; }
+}
+/* Sidebar: email/judul panjang tetap dalam kotak, tidak keluar */
+.admin-sidebar .text-white.lh-sm { min-width: 0; }
+.admin-sidebar .text-white-50,
+.admin-sidebar .fw-bold {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+/* Kolom aksi peminjaman: semua tombol sama lebar */
+.aksi-pinjam { width: 110px; }
+.aksi-pinjam .btn { width: 100%; }
+/* ===================== CAROUSEL HOME: 3 kartu sama lebar, semua ukuran layar ===================== */
+.home-slide-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+}
+.home-slide-card { min-width: 0; }
+
+/* Perkecil isi kartu agar tetap terbaca saat 3 kartu berdampingan di layar kecil */
+@media (max-width: 767.98px) {
+    .home-slide-card .dark-card img { height: 100px; }
+    .home-slide-card .dark-card .p-3 { padding: .5rem !important; }
+    .home-slide-card .dark-card .fw-semibold { font-size: 11.5px; }
+    .home-slide-card .dark-card .small { font-size: 10px; }
+    .home-slide-card .dark-card p {
+        font-size: 10px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+/* ===================== KONTAK & RATING (GUEST) ===================== */
+.form-kartu { background: #fff; border: 1px solid #d8d8d8; border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .14); }
+
+.guest-input { background: #eef1f5; border: 0; border-radius: 12px;
+    padding: .8rem 1.1rem; font-size: 14px; }
+.guest-input:focus { background: #eef1f5; box-shadow: 0 0 0 3px rgba(37, 99, 235, .15); }
+
+.rating-kartu { background: #fff; border: 2px solid #facc15; border-radius: 16px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .14); }
+
+.star-rating i { font-size: 30px; color: #facc15; cursor: pointer; transition: transform .15s; }
+.star-rating i:hover { transform: scale(1.15); }
+
+.btn-kuning { background: #facc15; border: 0; border-radius: 12px;
+    font-weight: 600; color: #111827; padding: .7rem; }
+.btn-kuning:hover { background: #eab308; color: #111827; }
+
+/* ===================== ADMIN: KONTAK & DASHBOARD ===================== */
+.dot-status { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.dot-status.kuning { background: #facc15; }
+.dot-status.hijau  { background: #4ade80; }
+
+.dot-baru { position: absolute; top: 12px; right: 12px; width: 12px; height: 12px;
+    border-radius: 50%; background: #facc15; }
+
+/* ===================== DASHBOARD: PENINGKATAN RATING ===================== */
+.rating-star-kecil { font-size: 11px; }
+.rating-teks-kecil { font-size: 10px; }
+
+.rating-row { display: flex; align-items: center; gap: .75rem; margin-bottom: .55rem; }
+.rating-row:last-child { margin-bottom: 0; }
+
+.rating-stars { flex-shrink: 0; width: 62px; font-size: 10px;
+    letter-spacing: 1.5px; white-space: nowrap; }
+
+.rating-bar { flex: 1 1 auto; height: 6px; background: #e9ecef; border-radius: 99px; }
+
+.rating-count { flex-shrink: 0; width: 22px; text-align: right;
+    font-size: 12px; color: #64748b; }
+
+/* Komentar terbaru dashboard: kartu bisa diklik */
+.admin-item-btn { display: block; width: 100%; border: 0; cursor: pointer;
+    text-align: left; font-family: inherit; }
+.admin-item-btn:hover { background: #e2e6ec; }
+
+/* Dashboard: bawah kartu komentar sejajar dengan kartu pengumuman */
+.col-dashboard-kiri { display: flex; flex-direction: column; }
+.col-dashboard-kiri .card-komentar { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.col-dashboard-kiri .card-komentar .card-body { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.col-dashboard-kiri .card-komentar .admin-scroll { flex: 1 1 auto; height: auto; min-height: 0; }
+
+/* Kompensasi zoom 80%: backdrop modal Bootstrap memakai 100vw/100vh
+   yang ikut menyusut, jadi dibesarkan 100/0.8 = 125% agar tetap
+   menutupi layar penuh */
+body.admin-body .modal-backdrop {
+    width: calc(100vw / 0.8);
+    height: calc(100vh / 0.8);
+}
+
+/* ===================== SIDEBAR: HANDLE GESER LEBAR ===================== */
+.sidebar-resize {
+    position: absolute;
+    top: 0; bottom: 0;
+    right: -3px;
+    width: 6px;
+    cursor: col-resize;
+    z-index: 1001;
+    transition: background .15s;
+}
+.sidebar-resize:hover,
+body.resizing .sidebar-resize { background: rgba(37, 99, 235, .4); }
+
+body.resizing { user-select: none; cursor: col-resize; }
+
+@media (max-width: 991.98px) {
+    .sidebar-resize { display: none; }
+}
+
+/* Halaman komentar: checkbox rapat */
+.admin-scroll .form-check-input { cursor: pointer; }

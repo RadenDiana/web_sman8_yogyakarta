@@ -1,0 +1,17 @@
+{
+  "public/assets/images/sekolah/hero-foto2.png": {
+    "file": "assets/hero-foto2-CHlXrcun.png",
+    "src": "public/assets/images/sekolah/hero-foto2.png"
+  },
+  "resources/css/app.css": {
+    "file": "assets/app-B80A41cu.css",
+    "src": "resources/css/app.css",
+    "isEntry": true
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-CcauXZJW.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  }
+}
